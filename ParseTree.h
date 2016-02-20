@@ -178,25 +178,24 @@ namespace ParseTree
     
     ParseTree::size_type ParseTree::priority(const std::string& str) const
     {
-        if(str=="(" || str==")")
+        switch(str[0])
         {
-            return 1;
-        }
-        else if(str=="+" || str=="-")
-        {
-            return 2;
-        }
-        else if(str=="*" || str=="/")
-        {
-            return 3;
-        }
-        else if(str=="neg" || str=="post")
-        {
-            return 4;
-        }
-        else
-        {
-            throw std::runtime_error("ParseTree: Illegal expression.");
+            case '(': case ')':
+                return 1;
+            case '+': case '-':
+                return 2;
+            case '*': case '/':
+                return 3;
+            case 'n': case 'p':
+            {
+                if(str=="neg" || str=="post")
+                {
+                    return 4;
+                }
+                //如果不是以上两个标记，向下执行default
+            }
+            default:
+                throw std::runtime_error("ParseTree: Illegal expression.");
         }
     }
 
